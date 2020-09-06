@@ -15,31 +15,32 @@ int main(void) {
 
 	// Init hardware, i.e the serial port in order to send debug messages.
 	hw_init();
-	printf("\r\nBootloader starting!\r\n");
+	printf("\r\nBootloader: Start\r\n");
 
 	/*
-	 * Do some bootloadery things here, like download, check, load and recheck the app;
+	 * Do some bootloadery things here, like download, check, flash and recheck the app;
 	 */
 
-	printf("Handing over to main app... \n");
+	printf("Bootloader: Handing over to main app... \n");
 
+	// go to the main app and never return
 	jump_to_app(APPLICATION_ADDRESS);
 
-	printf("\r\nError! Bootloader Hang!\r\n");
+	// this section of code should never be reached.
+	printf("Bootloader: Error, stopped.\r\n");
 	while (1) {
 
 	}
 }
 
-void jump_to_app(const int ADDRESS)
-{
+void jump_to_app(const int ADDRESS) {
 
-	typedef  void (*pFunction)(void);
+	typedef void (*pFunction)(void);
 	pFunction appEntry;
 	uint32_t appStack;
 
 	/* Get the application stack pointer (First entry in the application vector table) */
-	appStack = (uint32_t) *((__IO uint32_t*)ADDRESS);
+	appStack = (uint32_t) *((__IO uint32_t*) ADDRESS);
 
 	/* Get the application entry point (Second entry in the application vector table) */
 	appEntry = (pFunction) *(__IO uint32_t*) (ADDRESS + 4);
@@ -53,7 +54,6 @@ void jump_to_app(const int ADDRESS)
 	/* Start the application */
 	appEntry();
 }
-
 
 void hw_init(void) {
 
