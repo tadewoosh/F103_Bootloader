@@ -15,7 +15,6 @@ From this simple partiniotning come some consequences:
 
 ## Configuring the Bootloader project
 In the code editor one might find a *.ld* file, being the linker script file. It contains, among other stuff the addresses of the FLASH memory and its size. In order to prevent from building a bootloader that is too large one can edit the linker file and correct the size of the dedicated partition:
-
 ```C
 /* Specify the memory areas */
 MEMORY
@@ -25,7 +24,6 @@ MEMORY
   MEMORY_B1 (rx)  : ORIGIN = 0x60000000, LENGTH = 0K
 }
 ```
-
 and change the FLASH length to required size:
 ```C
 FLASH (rx)      : ORIGIN = 0x08000000, LENGTH = 16K
@@ -33,9 +31,9 @@ FLASH (rx)      : ORIGIN = 0x08000000, LENGTH = 16K
 This is a safeguard. If your bootloader size would exceed this limit your program is not goin to crash, instad you get a nice and understandable linker error.
 
 ## Code explanation
+See [main.c](/src/main.c) file to get all the code needed to understand the bootloader.
 
 ### Defining the app start address
-
 In the definitions section of the code you find:
 ```C
 /* Flash starting adress for STM32 devices: */
