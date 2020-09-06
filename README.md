@@ -16,7 +16,7 @@ From this simple partiniotning come some consequences:
 ## Configuring the Bootloader project
 In the code editor one might find a *.ld* file, being the linker script file. It contains, among other stuff the addresses of the FLASH memory and its size. In order to prevent from building a bootloader that is too large one can edit the linker file and correct the size of the dedicated partition:
 
-'''
+```
 /* Specify the memory areas */
 MEMORY
 {
@@ -24,9 +24,9 @@ MEMORY
   RAM (xrw)       : ORIGIN = 0x20000000, LENGTH = 20K
   MEMORY_B1 (rx)  : ORIGIN = 0x60000000, LENGTH = 0K
 }
-'''
+```
 
 and change the FLASH length to:
-'''
+```
 FLASH (rx)      : ORIGIN = 0x08000000, LENGTH = 16K
-'''
+```
