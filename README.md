@@ -16,7 +16,7 @@ From this simple partiniotning come some consequences:
 ## Configuring the Bootloader project
 In the code editor one might find a *.ld* file, being the linker script file. It contains, among other stuff the addresses of the FLASH memory and its size. In order to prevent from building a bootloader that is too large one can edit the linker file and correct the size of the dedicated partition:
 
-```
+```C
 /* Specify the memory areas */
 MEMORY
 {
@@ -26,7 +26,47 @@ MEMORY
 }
 ```
 
-and change the FLASH length to:
-```
+and change the FLASH length to required size:
+```C
 FLASH (rx)      : ORIGIN = 0x08000000, LENGTH = 16K
 ```
+This is a safeguard. If your bootloader size would exceed this limit your program is not goin to crash, instad you get a nice and understandable linker error.
+
+## Code explanation
+
+### Defining the app start address
+
+```C
+/* Flash starting adress for STM32 devices: */
+#define FLASH_START					0x08000000
+/* Application start address at 16kb (byte 16384) from the flash start*/
+#define APPLICATION_ADDRESS        	(FLASH_START + 0x4000)
+```
+
+### The magic ingredient
+
+```C
+void jump_to_app(const int ADDRESS)
+{
+	typedef  void (*pFunction)(void);
+	pFunction appEntry;
+	uint32_t appStack;
+
+	/* Get the application stack pointer (First entry in the application vector table) */
+	appStack = (uint32_t) *((__IO uint32_t*)ADDRESS);
+
+	/* Get the application entry point (Second entry in the application vector table) */
+	appEntry = (pFunction) *(__IO uint32_t*) (ADDRESS + 4);
+
+	/* Reconfigure vector table offset register to match the application location */
+	SCB->VTOR = ADDRESS;
+
+	/* Set the application stack pointer */
+	__set_MSP(appStack);
+
+	/* Start the application */
+	appEntry();
+}
+```
+
+
