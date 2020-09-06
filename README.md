@@ -68,4 +68,4 @@ void jump_to_app(const int ADDRESS)
 	appEntry();
 }
 ```
-What it does is calculates the addresses of the `appStack`, the `appEntry`, configures the vector table offset for interrupts, configures the new stack pointer and launches the app. This function never returns, so no code after it in the bootloader will execute. It is a good practise to leave an infinite loop afterwards in case something went wrong.
+This function calculates the addresses of the `appStack`, the `appEntry`, configures the vector table offset for interrupts, configures the new stack pointer and launches the app. This function never returns, so no code after it in the bootloader will execute. It is a good practise though, to leave an infinite loop afterwards in case something went wrong.
