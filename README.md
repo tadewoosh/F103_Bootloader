@@ -36,15 +36,17 @@ This is a safeguard. If your bootloader size would exceed this limit your progra
 
 ### Defining the app start address
 
+In the definitions section of the code you find:
 ```C
 /* Flash starting adress for STM32 devices: */
 #define FLASH_START					0x08000000
 /* Application start address at 16kb (byte 16384) from the flash start*/
 #define APPLICATION_ADDRESS        	(FLASH_START + 0x4000)
 ```
+This is the calculation of the app starting address. It is quite simple: to the flash start address you add the size of the bootloader partition (16K = 0x4000). This value is then passed to the magic ingredient.
 
 ### The magic ingredient
-
+Here we go. Once the bootloader does all it needs to do, like read, compare, reflash or reject the new app binary image we call the `jump_to_app` function.
 ```C
 void jump_to_app(const int ADDRESS)
 {
@@ -68,5 +70,4 @@ void jump_to_app(const int ADDRESS)
 	appEntry();
 }
 ```
-
-
+What it does is calculates the addresses of the `appStack`, the `appEntry`, configures the vector table offset for interrupts, configures the new stack pointer and launches the app. This function never returns, so no code after it in the bootloader will execute. It is a good practise to leave an infinite loop afterwards in case something went wrong.
