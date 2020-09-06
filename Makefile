@@ -66,6 +66,7 @@ all: buildelf
 
 buildelf: $(OBJS) 
 	$(CC) -o "$(BIN_DIR)/F103_Bootloader.elf" $(OBJS) $(LINKER_FLAGS)
+	arm-atollic-eabi-objcopy -O binary "$(BIN_DIR)/F103_Bootloader.elf" "$(BIN_DIR)/F103_Bootloader.bin"
 
 clean:
 	$(RM) $(OBJS) "$(BIN_DIR)/F103_Bootloader.elf" "$(BIN_DIR)/F103_Bootloader.map"
