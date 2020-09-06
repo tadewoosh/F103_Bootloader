@@ -1378,7 +1378,7 @@ Discarded input sections
 Memory Configuration
 
 Name             Origin             Length             Attributes
-FLASH            0x08000000         0x00004000         xr
+FLASH            0x08000000         0x00000400         xr
 RAM              0x20000000         0x00005000         xrw
 MEMORY_B1        0x60000000         0x00000000         xr
 *default*        0x00000000         0xffffffff
