@@ -1,5 +1,5 @@
 # F103 Bootloader
-This repo contains a Atollic True Studio project containing a bootloader program boilerplate for STM32F103 microcontroller.
+This repo contains a Atollic True Studio project containing a bootloader program boilerplate for STM32F103 microcontroller. For the app being called by the bootloader see [this](https://github.com/tadewoosh/F103_Bootloader_App) repositorium.
 
 ## What is a Bootloader?
 It is a regular embedded program like any other, but with a special ingredient: a function, that swithes the context to the main application.
